@@ -1,3 +1,5 @@
+import matplotlib.pyplot as plt
+
 class Grid:
     def __init__(self, fill_value, width, height):
         self.fill_value = fill_value
@@ -96,12 +98,12 @@ class Grid:
             x = x - width
             y += 1
 
-grid = Grid(0, 30, 30)
-grid.add_border(1, 1)
+grid = Grid((255, 255, 255), 30, 30)
+grid.add_border(1, (0, 0, 0))
 
-grid.draw_rect(5, 5, 10, 10, 9)
-grid.width = 20
-grid.height = 20
+grid.draw_rect((0, 0, 0), 10, 10, 9, 9)
+grid.draw_rect((255, 255, 255), 12, 12, 5, 5)
 
-for row in grid.data:
-    print(row)
+plt.imshow(grid.data)
+plt.axis('off')
+plt.show()
