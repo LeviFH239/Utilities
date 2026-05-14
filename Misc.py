@@ -9,8 +9,14 @@ class Grid:
 
         self.data = [[self.fill_value for _ in range(self.width)] for _ in range(self.height)]
 
+        self._history = []
+
     def get_value(self, x, y):
         return self.data[y][x]
+
+    @property
+    def history(self):
+        return self._history
 
     @property
     def width(self):
@@ -27,7 +33,7 @@ class Grid:
                 for row in self.data:
                     row.append(self.fill_value)
         self._width = value
-        self.add_border(self.border_thickness, self.border_value)
+        self.update_grid()
 
     @property
     def height(self):
@@ -43,7 +49,7 @@ class Grid:
             for _ in range(value - self.height):
                 self.data.append([self.fill_value for _ in range(self.width)])
         self._height = value
-        self.add_border(self.border_thickness, self.border_value)
+        self.update_grid()
 
     def add_border(self, border_thickness, border_value):
         for r, row in enumerate(self.data):
@@ -55,10 +61,47 @@ class Grid:
         self.border_thickness = border_thickness
         self.border_value = border_value
 
+    def append_value(self, value, x, y):
+        self.data[y][x] = value
+        self.history.append((value, x, y))
 
-grid = Grid(0, 10, 10)
+
+    def update_grid(self):
+        self.add_border(self.border_thickness, self.border_value)
+
+        for value, x, y in self.history:
+            self.data[y][x] = value
+
+
+    def draw_line(self, value, x, y, dx, dy, size):
+        if not (-1 <= dx <= 1 and -1 <= dy <= 1):
+            return
+
+        end_x = x + dx * (size - 1)
+        end_y = y + dy * (size - 1)
+
+        if not (0 <= end_x < self.width and 0 <= end_y < self.height):
+            return
+
+        for _ in range(size):
+            self.append_value(value, x, y)
+            x += dx
+            y += dy
+
+    def draw_rect(self, value, x, y, width, height):
+        for _ in range(height):
+            for _ in range(width):
+                self.append_value(value, x, y)
+                x += 1
+            x = x - width
+            y += 1
+
+grid = Grid(0, 30, 30)
 grid.add_border(1, 1)
-grid.height = 3
-grid.width = 3
+
+grid.draw_rect(5, 5, 10, 10, 9)
+grid.width = 20
+grid.height = 20
+
 for row in grid.data:
     print(row)
