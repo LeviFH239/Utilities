@@ -98,11 +98,12 @@ class Grid:
             x = x - width
             y += 1
 
-grid = Grid((255, 255, 255), 30, 30)
-grid.add_border(1, (0, 0, 0))
+grid = Grid((255, 255, 255), 300, 300)
+grid.add_border(10, (0, 0, 0))
 
-grid.draw_rect((0, 0, 0), 10, 10, 9, 9)
-grid.draw_rect((255, 255, 255), 12, 12, 5, 5)
+grid.draw_rect((0, 0, 0), 125, 125, 50, 50)
+grid.draw_rect((255, 255, 255), 137, 137, 25, 25)
+grid.draw_line((255, 0, 0), 100, 100, 1, 1, 100)
 
 plt.imshow(grid.data)
 plt.axis('off')
